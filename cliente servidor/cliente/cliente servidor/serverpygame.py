@@ -1,0 +1,52 @@
+import os
+import sys
+import zmq
+
+def loadFiles(path):
+    files = {}
+    dataDir = os.fsencode(path)
+    for file in os.listdir(dataDir):
+        filename = os.fsdecode(file)
+        print("Loading {}".format(filename))
+        files[filename] = file
+    return files
+
+def main():
+    musicFolder = sys.argv[1]
+    print("Serving files from {}".format(musicFolder))
+    files = loadFiles(musicFolder)
+    print("Load info on {} files.".format(len(files)))
+
+    # Create the socket and the context
+    context = zmq.Context()
+    s = context.socket(zmq.REP)
+    s.bind("tcp://*:5555")
+
+    while True:
+        msg = s.recv_json()
+        if msg["operacion"] == "lista":
+            s.send_json({"canciones": list(files.keys())})
+        elif msg["operacion"] == "descarga":
+            fileName = musicFolder + msg["cancion"]
+            with open(fileName,"rb") as input:
+                data = input.read(512)#
+                #s.send(data)
+                while content:
+            # Enviar contenido.
+                    s.send(data)
+                    data = input.read(512)
+                break
+
+            try:
+                s.send(chr(1))
+            except TypeError:
+            # Compatibilidad con Python 3.
+                s.send(bytes(chr(1), "ogg"))
+                
+            s.close()
+            read.close()
+            print("El archivo ha sido enviado correctamente.")
+
+if __name__ == '__main__':
+    main()
+

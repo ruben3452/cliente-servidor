@@ -1,0 +1,8 @@
+{
+ "host" : "*1",
+ "porhost" : "7773",
+ "hostser" : "*2",
+ "porhostser" : "5550",
+ "hostclie" : "*",
+ "portclie" : "7774"
+}
